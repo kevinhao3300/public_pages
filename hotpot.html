@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Grocery Split</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-bottom: 30px;
+      }
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 6px 10px;
+        text-align: left;
+      }
+      th {
+        background: #f4f4f4;
+      }
+      .right {
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Parsed Line Items</h2>
+
+    <table id="itemsTable">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th class="right">Price ($)</th>
+          <th>Paid By</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <h2>Totals Per Person</h2>
+
+    <table id="totalsTable">
+      <thead>
+        <tr>
+          <th>Person</th>
+          <th class="right">Amount Owed ($)</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script>
+      const people = ["Kevin", "Lydia", "Damian", "Ivery", "Briana"];
+
+      const items = [
+        { name: "Oyster Sauce", price: 6.29, paidBy: ["Lydia"] },
+        {
+          name: "Eggland’s Best Large Brown Eggs",
+          price: 5.69,
+          paidBy: ["Briana"],
+        },
+        {
+          name: "Vista Bean Curd Sticks (Potsticks)",
+          price: 5.49,
+          paidBy: ["Kevin"],
+        },
+        { name: "Kam Yu Chinese Sausage", price: 6.49, paidBy: ["Briana"] },
+
+        { name: "QT Peach Ice Bar", price: 1.99 },
+        { name: "Tasty Veg Fish Cake", price: 8.29 },
+        { name: "Ang Fish Cake", price: 8.99 },
+        { name: "Great Forest Mango", price: 11.99 },
+        { name: "Konnyaku Small Bundle", price: 2.89 },
+        { name: "Beef Chuck Eye Roll", price: 22.99 },
+        { name: "Wood Ear", price: 1.59 },
+        { name: "Paper Shopping Bag", price: 0.25 },
+        { name: "Paper Shopping Bag", price: 0.25 },
+        { name: "Premium Lamb Shoulder Roll", price: 18.99 },
+        { name: "Little Sheep Chili Red Hotpot", price: 5.99 },
+        { name: "Little Sheep Big Bone Soup", price: 5.99 },
+        { name: "Spinach", price: 3.59 },
+        { name: "Napa Cabbage", price: 2.52 },
+        { name: "Green Onion", price: 1.59 },
+        { name: "Passion Fruit Green Tea", price: 3.99 },
+        { name: "Water Drink", price: 0.1 },
+        { name: "Spam Less Salt", price: 4.99 },
+        { name: "Shanghai Dry Fry Bean Curd", price: 2.69 },
+        { name: "Aloe Vera Drink Mango", price: 4.49 },
+        { name: "Water Drink", price: 0.1 },
+        { name: "Sesame Paste", price: 4.19 },
+        { name: "Cilantro", price: 0.99 },
+        { name: "Sweet Corn", price: 5.99 },
+      ];
+
+      const totals = {};
+      people.forEach((p) => (totals[p] = 0));
+
+      const itemsTbody = document.querySelector("#itemsTable tbody");
+
+      items.forEach((item) => {
+        const payers = item.paidBy || people;
+        const split = item.price / payers.length;
+
+        payers.forEach((p) => {
+          totals[p] += split;
+        });
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+      <td>${item.name}</td>
+      <td class="right">${item.price.toFixed(2)}</td>
+      <td>${payers.join(", ")}</td>
+    `;
+        itemsTbody.appendChild(row);
+      });
+
+      const totalsTbody = document.querySelector("#totalsTable tbody");
+      people.forEach((p) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+      <td>${p}</td>
+      <td class="right">${totals[p].toFixed(2)}</td>
+    `;
+        totalsTbody.appendChild(row);
+      });
+    </script>
+  </body>
+</html>
